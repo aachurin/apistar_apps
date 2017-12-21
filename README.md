@@ -57,3 +57,30 @@ foobar/views.py
 ```
 
 And modify your `settings.py` and `routes.py` to add new application.
+
+### Components and commands
+
+To automatically load components and commands, create `components.py` and `commands.py` files in your application directory.
+
+```python
+
+...
+
+components = [
+    Component(FoobarComponent)
+]
+```
+
+Update your `settings.py`:
+
+```python
+# List of installed applications
+INSTALLED_APPS = [
+    'apistar_peewee',
+    'welcome',
+    'foobar',
+]
+
+# Routes
+ROUTECONF = 'routes.urls'
+```
