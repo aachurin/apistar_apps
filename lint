@@ -1,0 +1,4 @@
+#!/bin/sh -e
+
+flake8 apistar_apps
+mypy apistar_apps --ignore-missing-imports

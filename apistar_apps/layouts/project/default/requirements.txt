@@ -1,0 +1,2 @@
+apistar>=0.3.9
+apistar_apps>=0.1.1
