@@ -63,6 +63,7 @@ And modify your `settings.py` and `routes.py` to add new application.
 To automatically load components and commands, create `components.py` and `commands.py` files in your application directory.
 
 ```python
+# foobar/components.py
 
 ...
 
