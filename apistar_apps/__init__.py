@@ -22,12 +22,13 @@ class LoadedApps(typing.NamedTuple):
 def AppLoader(app_class,
               commands: CommandConfig=None,
               components: typing.List[Component]=None,
+              settings: typing.Dict[str, typing.Any]=None,
               settings_module: str='settings') -> App:
 
     components = list(components or [])
     commands = list(commands or [])
 
-    apps = _load_apps(settings_module)
+    apps = _load_apps(settings, settings_module)
 
     return app_class(
         routes=apps.routes,
@@ -81,17 +82,18 @@ def _populate_routes(routes):
             _populate_routes(route.routes)
 
 
-def _load_apps(settings_module):
-    try:
-        module = importlib.import_module(settings_module)
-    except ImportError:
-        msg = "Could not load settings from '%s'" % settings_module
-        raise ConfigurationError(msg)
+def _load_apps(settings, settings_module):
+    if settings is None:
+        try:
+            module = importlib.import_module(settings_module)
+        except ImportError:
+            msg = "Could not load settings from '%s'" % settings_module
+            raise ConfigurationError(msg)
 
-    settings = {
-        key: value for key, value in module.__dict__.items()
-        if not key.startswith('_')
-    }
+        settings = {
+            key: value for key, value in module.__dict__.items()
+            if not key.startswith('_')
+        }
 
     apps = settings.get('INSTALLED_APPS', ())
 
