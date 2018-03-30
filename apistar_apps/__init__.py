@@ -77,13 +77,14 @@ def _populate_routes(routes):
 def _load_apps(settings, settings_module):
     if settings is None:
         try:
-            module = importlib.import_module(settings_module)
+            settings = importlib.import_module(settings_module)
         except ImportError:
             msg = "Could not load settings from '%s'" % settings_module
             raise ConfigurationError(msg)
 
+    if not isinstance(settings, dict):
         settings = {
-            key: value for key, value in module.__dict__.items()
+            key: value for key, value in settings.__dict__.items()
             if not key.startswith('_')
         }
 
