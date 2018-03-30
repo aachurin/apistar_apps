@@ -42,21 +42,13 @@ def _is_list_of(list_, class_):
     return isinstance(list_, (list, tuple)) and all(isinstance(x, class_) for x in list_)
 
 
-def _lookup_classes(module, cls, attr):
+def _lookup_classes(module, attr):
     result = getattr(module, attr, None)
     if result is not None:
         return result
     try:
         module = importlib.import_module(module.__name__ + '.' + attr)
-        result = getattr(module, attr)
-        if result is not None:
-            return result
-        result = []
-        for name in dir(module):
-            inst = getattr(module, name)
-            if isinstance(inst, cls):
-                result.append(inst)
-        return result or None
+        return getattr(module, attr, None)
     except ImportError:
         pass
 
@@ -119,7 +111,7 @@ def _load_apps(settings, settings_module):
     for app_module in app_modules:
 
         # find components
-        app_components = _lookup_classes(app_module, Component, 'components')
+        app_components = _lookup_classes(app_module, 'components')
         if app_components:
             if not _is_list_of(app_components, Component):
                 msg = "Application '%s' is broken (bad list of components)" % app
@@ -127,7 +119,7 @@ def _load_apps(settings, settings_module):
             components.extend(app_components)
 
         # find commands
-        app_commands = _lookup_classes(app_module, Command, 'commands')
+        app_commands = _lookup_classes(app_module, 'commands')
         if app_commands:
             if not _is_list_of(app_commands, Command):
                 msg = "Application '%s' is broken (bad list of commands)" % app

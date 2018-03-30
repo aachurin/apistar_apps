@@ -1,5 +1,4 @@
 import os
-import sys
 from setuptools import setup
 
 
@@ -30,7 +29,7 @@ def get_package_data(package):
 
 setup(
     name='apistar-apps',
-    version='0.1.1',
+    version='0.1.3',
     url='https://github.com/aachurin/apistar_apps',
     license='BSD',
     author='Andrey Churin',
